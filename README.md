@@ -38,7 +38,7 @@ Download and install the `anon` daemon from [anyone-protocol/ator-protocol/relea
 
 ### Step 2 — Configure anonrc
 
-Edit your `anonrc` file at /etc/anon/anonrc
+Edit your `anonrc` file at `/etc/anon/anonrc`:
 
 ```
 # Anon client-only
@@ -74,31 +74,35 @@ sudo cat /var/lib/anon/monerod/hostname
 ```
 
 ---
+
 ### Step 3 — Install forked Monero
 
 Create monero user and group:
 
 ```bash
-useradd --system monero
+sudo useradd --system monero
 ```
+
 Create monero config, data and log directories:
 
 ```bash
-mkdir -p /etc/monero     # config
-mkdir -p /var/lib/monero # blockchain
-mkdir -p /var/log/monero # logs
-chown monero:monero /etc/monero
-chown monero:monero /var/lib/monero
-chown monero:monero /var/log/monero
+sudo mkdir -p /etc/monero     # config
+sudo mkdir -p /var/lib/monero # blockchain
+sudo mkdir -p /var/log/monero # logs
+sudo chown monero:monero /etc/monero
+sudo chown monero:monero /var/lib/monero
+sudo chown monero:monero /var/log/monero
 ```
 
-Download and install 
+Download and install:
 
 ```bash
-wget https://github.com/xmranonp/monero/releases/download/v0.18-anon-1/monerod-anon-0.18-ubuntu24-amd64.deb
-sudo dpkg -i monerod-anon-0.18-ubuntu24-amd64.deb
+wget https://github.com/xmranonp/monero/releases/download/v0.18.5-anon-1/monerod-anon-0.18.5.0-ubuntu24-amd64.deb
+sudo dpkg -i monerod-anon-0.18.5.0-ubuntu24-amd64.deb
 ```
+
 ---
+
 ### Step 4 — Configure monerod
 
 Edit `/etc/monero/monerod.conf` as shown below:
@@ -110,64 +114,63 @@ Edit `/etc/monero/monerod.conf` as shown below:
 # https://docs.getmonero.org/interacting/monerod-reference/
 
 # Data directory (blockchain db and indices)
-data-dir=/var/lib/monero/bitmonero 
+data-dir=/var/lib/monero/bitmonero
 
-# Optional pruning - Saves 2/3 of disk space w/o degrading functionality 
-#prune-blockchain=1 (uncomment)
-# Allow downloading pruned blocks instead of prunning them yourself
-#sync-pruned-blocks=1 (uncomment)    
+# Optional pruning - Saves 2/3 of disk space w/o degrading functionality
+#prune-blockchain=1
+# Allow downloading pruned blocks instead of pruning them yourself
+#sync-pruned-blocks=1
 
 # Centralized services
 # Do not check DNS TXT records for a new version
 check-updates=disabled
 # Block known malicious nodes
-enable-dns-blocklist=1         
+enable-dns-blocklist=1
 
 # Log file
 log-file=/var/log/monero/monero.log
 # Minimal logs, WILL NOT log peers or wallets connecting
 log-level=0
 # Set to 2GB to mitigate log trimming by monerod; configure logrotate instead
-max-log-file-size=2147483648   
+max-log-file-size=2147483648
 
-# ANyONe: broadcast transactions originating from connected wallets over ANyONe (does not concern relayed transactions)
+# ANyONe: route outbound P2P and broadcast wallet transactions over ANyONe
 # Format: tx-proxy=<zone>,<proxy-host>:<proxy-port>,<max-connections>
 tx-proxy=anon,127.0.0.1:9050,16
-# Send all network traffic via Tor SOCKS5 proxy (localhost:9050) 
-proxy=127.0.0.1:9050  
 
 # Advertise your .anyone address so peers can reach you inbound
 # Format: anonymous-inbound=<your-address>:<port>,<local-bind>:<port>,<max-connections>
-anonymous-inbound=PASTE_YOUR_ONION_HOSTNAME.anyone:18084,127.0.0.1:18084,16       
-                                                                                
+anonymous-inbound=PASTE_YOUR_ANYONE_HOSTNAME.anyone:18084,127.0.0.1:18084,16
+
 # P2P bind locally
 # Listen for P2P connections on localhost only (no clearnet exposure)
 p2p-bind-ip=127.0.0.1
 # Standard Monero P2P port
 p2p-bind-port=18080
 
-# RPC settings for daemon communication 
+# RPC settings for daemon communication
 # Bind restricted RPC interface to localhost only (no external access)
 rpc-restricted-bind-ip=127.0.0.1
 # Port for restricted RPC (safer, limited commands)
-rpc-restricted-bind-port=18089    
+rpc-restricted-bind-port=18089
 
 # Privacy flags
-# Disable UPnP/IGD port mapping — prevents daemon from exposing your IP
+# Disable UPnP/IGD port mapping
 no-igd=1
-# Do not advertise your P2P port to peers in handshakes     
-hide-my-port=1          
+# Do not advertise your P2P port to peers in handshakes
+hide-my-port=1
 
 # Database sync mode
-# Safest sync mode
-db-sync-mode=safe:sync   
+db-sync-mode=safe:sync
 
 # Network limits
 # Maximum number of outbound peer connections
 out-peers=64
-# Maximum number of inbound peer connections  
-in-peers=16             
+# Maximum number of inbound peer connections
+in-peers=16
 ```
+
+---
 
 ### Step 5 — Add peers manually
 
@@ -179,9 +182,19 @@ Add peers directly:
 ```ini
 # In /etc/monero/monerod.conf
 
-add-peer=KNOWN_PEER_ADDRESS.anyone:18084           # Replace KNOWN_PEER_ADDRESS.anon with a known .anyone peer address
-#add-exclusive-node=<peer-address>.anyone:18084    # Use add-exclusive-node instead if you want to connect ONLY to specific trusted nodes and nobody else (not recommended for general use)
+add-peer=KNOWN_PEER_ADDRESS.anyone:18084           # Replace with a known .anyone peer address
+#add-exclusive-node=<peer-address>.anyone:18084    # Use this instead if you want to connect ONLY to specific trusted nodes (not recommended for general use)
 ```
+
+---
+
+### Step 6 — Start the daemon
+
+```bash
+sudo systemctl start monerod
+sudo systemctl status monerod
+```
+
 ---
 
 ## Connecting a wallet over ANyONe
@@ -199,7 +212,7 @@ monero-wallet-cli \
 Check the monerod log for lines containing `zone=anon`:
 
 ```bash
-./monerod --log-level 1 2>&1 | grep anon
+sudo tail -f /var/log/monero/monero.log | grep anon
 ```
 
 Test RPC reachability through ANyONe:
@@ -208,6 +221,7 @@ Test RPC reachability through ANyONe:
 curl --socks5-hostname 127.0.0.1:9050 \
      http://abc123...xyz7654.anyone:18089/get_info
 ```
+
 ---
 
 ## Security notes
