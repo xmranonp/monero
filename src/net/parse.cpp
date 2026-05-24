@@ -34,6 +34,7 @@
 #include "net/socks.h"
 #include "net/tor_address.h"
 #include "net/i2p_address.h"
+#include "net/anon_address.h"
 #include "string_tools.h"
 #include "string_tools_lexical.h"
 
@@ -174,6 +175,8 @@ namespace net
             return tor_address::make(address, default_port);
         if (host_str_ref.ends_with(".i2p"))
             return i2p_address::make(address);
+        if (host_str_ref.ends_with(".anyone"))
+            return anon_address::make(address, default_port);
 
         boost::system::error_code ec;
         boost::asio::ip::address_v6 v6 = boost::asio::ip::make_address_v6(host_str, ec);

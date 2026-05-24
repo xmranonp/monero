@@ -142,6 +142,8 @@ namespace epee { namespace net_utils
       return "i2p";
     case zone::tor:
       return "tor";
+    case zone::anon:
+      return "anon";
     default:
       break;
     }
@@ -156,7 +158,8 @@ namespace epee { namespace net_utils
       return zone::i2p;
     if (value == "tor")
       return zone::tor;
+    if (value == "anon")
+      return zone::anon;
     return zone::invalid;
   }
 }}
-

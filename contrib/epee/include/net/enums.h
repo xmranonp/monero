@@ -43,7 +43,8 @@ namespace net_utils
 		ipv4 = 1,
 		ipv6 = 2,
 		i2p = 3,
-		tor = 4
+		tor = 4,
+		anon = 5
 	};
 
 	enum class zone : std::uint8_t
@@ -51,7 +52,8 @@ namespace net_utils
 		invalid = 0,
 		public_ = 1, // public is keyword
 		i2p = 2,     // order from here changes priority of selection for origin TXes
-		tor = 3
+		tor = 3,
+		anon = 4 // ANyONe Protocol (.anyone)
 	};
 
 	// implementations in src/net_utils_base.cpp

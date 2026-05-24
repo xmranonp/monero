@@ -59,6 +59,7 @@ namespace net
 {
 	class tor_address;
 	class i2p_address;
+	class anon_address;
 }
 
 namespace epee
@@ -337,6 +338,8 @@ namespace net_utils
 					return this_ref.template serialize_addr<net::tor_address>(is_store_, stg, hparent_section);
 				case address_type::i2p:
 					return this_ref.template serialize_addr<net::i2p_address>(is_store_, stg, hparent_section);
+				case address_type::anon:
+					return this_ref.template serialize_addr<net::anon_address>(is_store_, stg, hparent_section);
 				case address_type::invalid:
 				default:
 					break;

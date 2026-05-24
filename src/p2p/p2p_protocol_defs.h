@@ -37,6 +37,7 @@
 #include "net/net_utils_base.h"
 #include "net/tor_address.h" // needed for serialization
 #include "net/i2p_address.h" // needed for serialization
+#include "net/anon_address.h" // needed for serialization
 #include "misc_language.h"
 #include "string_tools.h"
 #include "time_helper.h"

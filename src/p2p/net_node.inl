@@ -880,6 +880,9 @@ namespace nodetool
         };
       }
       return {};
+    case epee::net_utils::zone::anon:
+      // No ANyONe seed nodes yet; users must add peers manually
+      return {};
     default:
       break;
     }
@@ -2351,11 +2354,12 @@ namespace nodetool
     static_assert(unsigned(enet::zone::public_) == 1, "public_ expected to be 1");
     static_assert(unsigned(enet::zone::i2p) == 2, "i2p expected to be 2");
     static_assert(unsigned(enet::zone::tor) == 3, "tor expected to be 3");
+    static_assert(unsigned(enet::zone::anon) == 4, "anon expected to be 4");
 
     // check for anonymity networks with noise and connections
     for (auto network = ++m_network_zones.begin(); network != m_network_zones.end(); ++network)
     {
-      if (enet::zone::tor < network->first)
+      if (enet::zone::anon < network->first)
         break; // unknown network
 
       const auto status = network->second.m_notifier.get_status();
@@ -2366,7 +2370,7 @@ namespace nodetool
     // use the anonymity network with outbound support
     for (auto network = ++m_network_zones.begin(); network != m_network_zones.end(); ++network)
     {
-      if (enet::zone::tor < network->first)
+      if (enet::zone::anon < network->first)
         break; // unknown network
 
       const auto status = network->second.m_notifier.get_status();

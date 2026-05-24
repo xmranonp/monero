@@ -47,6 +47,7 @@
 #include "net/parse.h"
 #include "net/tor_address.h"
 #include "net/i2p_address.h"
+#include "net/anon_address.h"
 #include "p2p/p2p_protocol_defs.h"
 #include "string_tools.h"
 
@@ -94,6 +95,12 @@ namespace
         case net::i2p_address::get_type_id():
             set = client->set_connect_command(remote.as<net::i2p_address>(), std::addressof(proxy.userinfo));
             break;
+        case net::anon_address::get_type_id():
+        {
+            const auto& anon = remote.as<net::anon_address>();
+            set = client->set_connect_command(anon.host_str(), anon.port(), std::addressof(proxy.userinfo));
+            break;
+        }
         case epee::net_utils::ipv4_network_address::get_type_id():
             set = client->set_connect_command(remote.as<epee::net_utils::ipv4_network_address>(), std::addressof(proxy.userinfo));
             break;
@@ -229,6 +236,9 @@ namespace nodetool
             case epee::net_utils::zone::i2p:
                 proxies.back().zone = epee::net_utils::zone::i2p;
                 break;
+            case epee::net_utils::zone::anon:
+                proxies.back().zone = epee::net_utils::zone::anon;
+                break;
             default:
                 MERROR("Invalid network for --" << arg_tx_proxy.name);
                 return boost::none;
@@ -290,6 +300,10 @@ namespace nodetool
             case net::i2p_address::get_type_id():
                 inbounds.back().our_address = std::move(*our_address);
                 inbounds.back().default_remote = net::i2p_address::unknown();
+                break;
+            case net::anon_address::get_type_id():
+                inbounds.back().our_address = std::move(*our_address);
+                inbounds.back().default_remote = net::anon_address::unknown();
                 break;
             default:
                 MERROR("Invalid inbound address (" << address << ") for --" << arg_anonymous_inbound.name << ": " << (our_address ? "invalid type" : our_address.error().message()));
