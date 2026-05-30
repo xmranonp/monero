@@ -95,10 +95,9 @@ sudo chown monero:monero /var/log/monero
 Download and install:
 
 ```bash
-wget .deb
-sudo dpkg -i .deb
+wget https://github.com/xmranonp/monero/releases/download/v0.18.5-anon-1/monerod-anon-0.18.5.0-ubuntu24-amd64.deb
+sudo apt install ./monerod-anon-0.18.5.0-ubuntu24-amd64.deb
 ```
-
 ---
 
 ### Step 4 — Configure monerod
