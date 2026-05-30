@@ -113,7 +113,7 @@ Edit `/etc/monero/monerod.conf`:
 # https://docs.getmonero.org/interacting/monerod-reference/
 
 # ── DATA ─────────────────────────────────────────────────────────────────────
-data-dir=/home/monero/.bitmonero
+data-dir=/var/lib/monero/bitmonero
 
 # ── PRUNING ──────────────────────────────────────────────────────────────────
 # Saves ~2/3 disk space with no loss of functionality - Comment both if you plan to run a full node.
