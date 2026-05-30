@@ -32,16 +32,17 @@ This fork adds `zone::anon` as a first-class anonymity network alongside Tor and
 
 ## Setup
 
-### Step 1 — Install the ANyONe client
+### Step 1 — Install the ANyONe daemon
 
 Download and install the `anon` daemon from [anyone-protocol/ator-protocol/releases](https://github.com/anyone-protocol/ator-protocol/releases).
 
 ### Step 2 — Configure anonrc
 
-Edit your `anonrc` file at `/etc/anon/anonrc`:
+Create your anonrc file by running :
 
 ```
-# Anon client-only
+sudo tee /etc/anon/anonrc > /dev/null << 'EOF'
+#Anon client-only
 ORPort 0
 DirPort 0
 SocksPort 127.0.0.1:9050
@@ -56,9 +57,10 @@ DataDirectory /var/lib/anon
 HiddenServiceDir /var/lib/anon/monerod/
 HiddenServicePort 18084 127.0.0.1:18084
 HiddenServicePort 18089 127.0.0.1:18089
+EOF
 ```
 
-Restart the `anon` daemon:
+Restart the `anon`:
 
 ```bash
 sudo systemctl restart anon
@@ -70,7 +72,6 @@ Read your `.anyone` address:
 sudo cat /var/lib/anon/monerod/hostname
 # example output: abc123...xyz7654.anyone
 ```
-
 ---
 
 ### Step 3 — Install forked Monero daemon
