@@ -70,7 +70,6 @@ Read your `.anyone` address:
 
 ```bash
 sudo cat /var/lib/anon/monerod/hostname
-# example output: abc123...xyz7654.anyone
 ```
 ---
 
@@ -85,9 +84,9 @@ sudo useradd --system monero
 Create monero config, data and log directories:
 
 ```bash
-sudo mkdir -p /etc/monero     # config
-sudo mkdir -p /var/lib/monero # blockchain
-sudo mkdir -p /var/log/monero # logs
+sudo mkdir -p /etc/monero    
+sudo mkdir -p /var/lib/monero 
+sudo mkdir -p /var/log/monero 
 sudo chown monero:monero /etc/monero
 sudo chown monero:monero /var/lib/monero
 sudo chown monero:monero /var/log/monero
