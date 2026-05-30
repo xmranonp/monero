@@ -97,6 +97,8 @@ Download and install:
 ```bash
 wget https://github.com/xmranonp/monero/releases/download/v0.18.5-anon-1/monerod-anon-0.18.5.0-ubuntu24-amd64.deb
 sudo apt install ./monerod-anon-0.18.5.0-ubuntu24-amd64.deb
+sudo systemctl daemon-reload
+sudo systemctl enable --now monerod
 ```
 ---
 
@@ -168,7 +170,7 @@ db-sync-mode=fast:async:250000000
 ### Step 5 — Start the daemon
 
 ```bash
-sudo systemctl start monerod
+sudo systemctl restart monerod
 sudo systemctl status monerod
 ```
 
