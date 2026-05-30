@@ -60,7 +60,7 @@ HiddenServicePort 18089 127.0.0.1:18089
 EOF
 ```
 
-Restart the `anon`:
+Restart `anon`:
 
 ```bash
 sudo systemctl restart anon
@@ -103,7 +103,7 @@ sudo dpkg -i .deb
 
 ### Step 4 — Configure monerod
 
-Edit `/etc/monero/monerod.conf` as shown below:
+Edit `/etc/monero/monerod.conf`:
 
 ```ini
 # /etc/monero/monerod.conf
@@ -175,16 +175,7 @@ sudo systemctl status monerod
 
 ---
 
-## Connecting a wallet over ANyONe
-
-```bash
-monero-wallet-cli \
-  --proxy 127.0.0.1:9050 \
-  --daemon-address abc123...xyz7654.anyone:18089
-```
----
-
-## Verifying it works
+### Step 6 — Verifying it works
 
 Check for leaks :
 
@@ -200,9 +191,20 @@ curl --socks5-hostname 127.0.0.1:9050 \
 ```
 ---
 
+## Connecting a wallet over ANyONe
+
+```bash
+monero-wallet-cli \
+  --proxy 127.0.0.1:9050 \
+  --daemon-address abc123...xyz7654.anyone:18089
+```
+---
+
 ## Notes
 
+- Blockchain sync does not run over `.anyone` hidden services (same as Tor/I2P — see Monero's [ANONYMITY_NETWORKS.md](https://github.com/monero-project/monero/blob/master/docs/ANONYMITY_NETWORKS.md)). -
+- Sync happens over ANyONe network **exit nodes** via `proxy=`, while `.anyone` handles private transaction broadcast and inbound P2P.
 - If no ANyONe peers are reachable, transactions queue until a peer becomes available — no clearnet fallback occurs
-
+- Built on Ubuntu 24.04, amd64. Based on Monero v0.18.5.0 'Fluorine Fermi'.
 ---
 
